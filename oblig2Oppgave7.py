@@ -1,8 +1,6 @@
-import sympy as sp
 import pyglet as pg
-import random as rnd
+from random import randint as rnd
 from pyglet import shapes
-from pyglet.window import key
 
 window = pg.window.Window(1000, 400)
 
@@ -14,28 +12,31 @@ color4 = (250, 250, 250)
 circles = []
 lines = []
 
-for i in range(10):
-    circles.append(shapes.Circle(rnd.uniform(100, 800), rnd.uniform(100, 300), rnd.uniform(10, 75), color1))
-    lines.append(shapes.Line(rnd.uniform(100, 800), rnd.uniform(100, 300), rnd.uniform(10, 75), 1, color2))
-
-#solution = 0
+batch = pg.graphics.Batch()
 
 for i in range(10):
-    if circles[i] in circles[i-1]:
-        circles[i].color = color3
-        circles[i-1].color = color3
-    if circles[i] in lines[i]:
-        circles[i].color = color4
+    circle = shapes.Circle(x=rnd(100, 800),
+                           y=rnd(100, 300),
+                           radius=rnd(10, 75),
+                           color=color1,
+                           batch=batch)
+    circles.append(circle)
 
-# @window.event #runs the below function every time an event happens in the window?
-#def on_draw():
-#    if solution == 0: drawA()
-#    else: drawB()
+    # classLine(x, y, x2, y2, width=1, color=(255, 255, 255, 255), batch=None, group=None)
+    line = shapes.Line(x=rnd(100, 800),
+                       y=rnd(100, 300),
+                       x2=rnd(100, 800),
+                       y2=rnd(100, 300),
+                       width=rnd(10, 75),
+                       color=color2,
+                       batch=batch)
+    lines.append(line)
 
-def draw10():
-    for index in range(10):
-        lines[index].draw()
+@window.event
+def on_draw():
+    window.clear()
 
-draw10()
+    batch.draw()
+
 
 pg.app.run()
